@@ -25,8 +25,8 @@ body{
 }
 
 /* ====== Layout ====== */
-.stage{ min-height:100%; display:grid; place-items:start center; padding:24px }
-.card{ position:relative; width:min(860px,100%); margin-top:10px }
+.stage{ min-height:100%; display:grid; place-items:start center; padding:16px }
+.card{ position:relative; width:min(860px,100%); margin-top:8px }
 .close{
   position:absolute; right:0; top:-12px; transform:translateY(-100%);
   border:0; background:rgba(255,255,255,.3); color:#fff; width:36px; height:36px;
@@ -34,38 +34,58 @@ body{
 }
 .headline{
   text-align:center; color:#fff; font-weight:800; letter-spacing:.6px;
-  font-size:clamp(20px,3.5vw,28px); text-transform:uppercase; margin:0 0 12px;
+  font-size:clamp(18px,4.2vw,28px); text-transform:uppercase; margin:0 0 10px;
 }
 
 /* ====== Receipt "paper" ====== */
 .receipt{
   background:var(--paper);
   border-radius:28px;
-  padding:26px 26px 18px;
+  padding:20px 18px 14px;
   box-shadow:var(--shadow);
 }
 .block p{ margin:4px 0 }
 .muted{ color:var(--muted) }
-.stars{ color:#d1d5db; letter-spacing:3px; text-align:center; margin:16px 0 12px }
+.stars{ color:#d1d5db; letter-spacing:3px; text-align:center; margin:14px 0 10px; font-size:12px }
 
 .table-wrap{ overflow-x:auto }
 .items{ width:100%; border-collapse:collapse; font-size:14px }
-.items th{ text-align:left; color:#6b7280; font-weight:600; padding:4px 8px }
-.items td{ padding:6px 8px; vertical-align:top }
+.items th{ text-align:left; color:#6b7280; font-weight:600; padding:4px 6px; white-space:nowrap }
+.items td{ padding:6px 6px; vertical-align:top }
 .items .name{ width:55% }
-.items .sum, .items th.sum{ text-align:right }
+.items .sum, .items th.sum{ text-align:right; white-space:nowrap }
 .items .vat{ color:#6b7280; font-size:12px; margin-top:6px }
 .items .vat span{ float:right }
 .items .spacer td{ padding:8px 0 }
 
 /* Totals */
-.totals{ margin-top:8px; font-size:14px }
-.totals .row{ display:flex; justify-content:space-between; padding:6px 8px }
+.totals{ margin-top:6px; font-size:14px }
+.totals .row{ display:flex; justify-content:space-between; padding:6px 6px }
 .totals .total{ font-weight:800 }
 .totals .tax .label span{ color:var(--muted) }
+.fp{ text-align:center; color:#6b7280; font-size:13px; margin-top:6px }
 
-.fp{ text-align:center; color:#6b7280; font-size:14px; margin-top:8px }
-
-@media (max-width:560px){
+/* ====== Mobile: превращаем таблицу в карточки ====== */
+@media (max-width: 560px){
+  body{ font-size:14px }
+  .receipt{ padding:16px 12px }
+  .items thead{ display:none } /* скрываем заголовок таблицы */
+  .items, .items tbody, .items tr, .items td{ display:block; width:100% }
+  .items tr{ background:transparent; border-radius:12px; padding:10px 8px; position:relative }
+  .items tr.spacer{ padding:0; height:4px }
+  .items td{ padding:4px 2px }
+  .items td::before{
+    content:attr(data-label);
+    display:inline-block;
+    min-width:92px;
+    color:var(--muted);
+    font-size:12px;
+    margin-right:8px;
+  }
+  .items td.name::before{ content:"Название" }
+  .items td.sum{ text-align:left }
+  .items .vat{ display:flex; justify-content:space-between }
   .items .name{ width:auto }
+  .stars{ font-size:10px; letter-spacing:2px }
+  .totals .row{ padding:6px 2px }
 }
