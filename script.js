@@ -1,5 +1,5 @@
-// ДАННЫЕ (как на скриншоте, но с изменёнными количествами)
-const VAT_RATE = 0.12; // 12%
+// === ДАННЫЕ (по умолчанию, если параметры не переданы) ===
+const VAT_RATE = 0.12;
 const ITEMS = [
   {
     no: 1,
@@ -7,7 +7,7 @@ const ITEMS = [
     details: "(3456×2234) Apple M4 Max System on Chip (SoC) RAM 36GB SSD 1000GB Apple macOS Sequoia Space Black 2.15kg",
     dept: "1",
     price: 2604990,
-    qty: 2, // было 1, теперь 2
+    qty: 2,
     unit: "шт"
   },
   {
@@ -16,7 +16,7 @@ const ITEMS = [
     details: "Model A2304",
     dept: "1",
     price: 83990,
-    qty: 2, // было 1, теперь 2
+    qty: 2,
     unit: "шт"
   },
   {
@@ -29,6 +29,13 @@ const ITEMS = [
     unit: "шт"
   }
 ];
+
+// === ЧТЕНИЕ ПАРАМЕТРОВ ИЗ URL ===
+const params = new URLSearchParams(window.location.search);
+const fp = params.get("i");  // фискальный признак
+const reg = params.get("f"); // регистрационный номер
+const sum = params.get("s"); // сумма
+const time = params.get("t"); // дата и время
 
 // Формат числа: "2 690 480,00"
 const fmt = (n) =>
@@ -85,6 +92,21 @@ function render() {
       <div class="value">${fmt(taxes)} ₸</div>
     </div>
   `;
+
+  // === ВСТАВКА ПАРАМЕТРОВ В ВЕРСТКУ ===
+  if (fp) document.querySelector(".fp").textContent = `ФП: ${fp}`;
+  if (reg) {
+    const regLine = document.querySelector(".org p:nth-child(4)");
+    if (regLine) regLine.textContent = `Регистрационный номер: ${reg}`;
+  }
+  if (sum) document.querySelector(".headline").textContent = `ЧЕК НАЙДЕН! (${sum} ₸)`;
+  if (time) {
+    const formatted = time
+      .replace("T", " ")
+      .replace(/(\\d{4})(\\d{2})(\\d{2})/, "$3.$2.$1");
+    const dateLine = document.querySelector(".meta p:last-child");
+    if (dateLine) dateLine.textContent = formatted;
+  }
 }
 
 render();
