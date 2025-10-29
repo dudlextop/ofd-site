@@ -1,0 +1,71 @@
+/* ====== Base ====== */
+*{box-sizing:border-box}
+:root{
+  --ink:#111827;
+  --muted:#6b7280;
+  --paper:#ffffff;
+  --shadow:0 20px 50px rgba(0,0,0,.25);
+  --radius:22px;
+}
+html,body{height:100%}
+body{
+  margin:0;
+  font:15px/1.55 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Arial,"Noto Sans","Helvetica Neue",sans-serif;
+  color:var(--ink);
+  background:#0f1324;
+}
+
+/* ====== Gradient background ====== */
+.bg{
+  position:fixed; inset:0;
+  background:
+    radial-gradient(1200px 600px at 25% 70%, #c93d5c 0%, #0f1324 50%),
+    linear-gradient(120deg, #a81f8a, #3966ff);
+  opacity:.9; z-index:-1;
+}
+
+/* ====== Layout ====== */
+.stage{ min-height:100%; display:grid; place-items:start center; padding:24px }
+.card{ position:relative; width:min(860px,100%); margin-top:10px }
+.close{
+  position:absolute; right:0; top:-12px; transform:translateY(-100%);
+  border:0; background:rgba(255,255,255,.3); color:#fff; width:36px; height:36px;
+  border-radius:999px; cursor:pointer; font-size:18px; line-height:1; backdrop-filter: blur(2px);
+}
+.headline{
+  text-align:center; color:#fff; font-weight:800; letter-spacing:.6px;
+  font-size:clamp(20px,3.5vw,28px); text-transform:uppercase; margin:0 0 12px;
+}
+
+/* ====== Receipt "paper" ====== */
+.receipt{
+  background:var(--paper);
+  border-radius:28px;
+  padding:26px 26px 18px;
+  box-shadow:var(--shadow);
+}
+.block p{ margin:4px 0 }
+.muted{ color:var(--muted) }
+.stars{ color:#d1d5db; letter-spacing:3px; text-align:center; margin:16px 0 12px }
+
+.table-wrap{ overflow-x:auto }
+.items{ width:100%; border-collapse:collapse; font-size:14px }
+.items th{ text-align:left; color:#6b7280; font-weight:600; padding:4px 8px }
+.items td{ padding:6px 8px; vertical-align:top }
+.items .name{ width:55% }
+.items .sum, .items th.sum{ text-align:right }
+.items .vat{ color:#6b7280; font-size:12px; margin-top:6px }
+.items .vat span{ float:right }
+.items .spacer td{ padding:8px 0 }
+
+/* Totals */
+.totals{ margin-top:8px; font-size:14px }
+.totals .row{ display:flex; justify-content:space-between; padding:6px 8px }
+.totals .total{ font-weight:800 }
+.totals .tax .label span{ color:var(--muted) }
+
+.fp{ text-align:center; color:#6b7280; font-size:14px; margin-top:8px }
+
+@media (max-width:560px){
+  .items .name{ width:auto }
+}
