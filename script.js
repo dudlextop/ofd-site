@@ -1,5 +1,5 @@
-// ДАННЫЕ и логика подсчёта НДС (12% включено в цену)
-const VAT_RATE = 0.12;
+// ДАННЫЕ (как на скриншоте, но с изменёнными количествами)
+const VAT_RATE = 0.12; // 12%
 const ITEMS = [
   {
     no: 1,
@@ -7,7 +7,7 @@ const ITEMS = [
     details: "(3456×2234) Apple M4 Max System on Chip (SoC) RAM 36GB SSD 1000GB Apple macOS Sequoia Space Black 2.15kg",
     dept: "1",
     price: 2604990,
-    qty: 2,
+    qty: 2, // было 1, теперь 2
     unit: "шт"
   },
   {
@@ -16,7 +16,7 @@ const ITEMS = [
     details: "Model A2304",
     dept: "83",
     price: 83990,
-    qty: 2,
+    qty: 2, // было 1, теперь 2
     unit: "шт"
   },
   {
@@ -30,39 +30,43 @@ const ITEMS = [
   }
 ];
 
+// Формат числа: "2 690 480,00"
 const fmt = (n) =>
   new Intl.NumberFormat('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n);
+
+// Если цена включает НДС 12%, то сумма НДС = total * 12 / 112
 const vatInclusive = (total) => total * VAT_RATE / (1 + VAT_RATE);
 
-function render(){
-  const rows = document.getElementById('rows');
-  const totals = document.getElementById('totals');
-  let grand = 0, taxes = 0;
+function render() {
+  const rows = document.getElementById("rows");
+  const totals = document.getElementById("totals");
+  let grand = 0;
+  let taxes = 0;
 
   ITEMS.forEach(item => {
-    const line = item.price * item.qty;
-    const vat = vatInclusive(line);
-    grand += line;
+    const lineTotal = item.price * item.qty;
+    const vat = vatInclusive(lineTotal);
+    grand += lineTotal;
     taxes += vat;
 
-    const spacer = document.createElement('tr');
-    spacer.className = 'spacer';
-    spacer.innerHTML = '<td></td>';
-    rows.appendChild(spacer);
+    const trSpacer = document.createElement("tr");
+    trSpacer.className = "spacer";
+    trSpacer.innerHTML = '<td colspan="7"></td>';
+    rows.appendChild(trSpacer);
 
-    const tr = document.createElement('tr');
+    const tr = document.createElement("tr");
     tr.innerHTML = `
-      <td data-label="№">${item.no}.</td>
-      <td class="name" data-label="Название">
+      <td>${item.no}.</td>
+      <td class="name">
         <div><strong>${item.title}</strong></div>
         ${item.details ? `<div class="muted">${item.details}</div>` : ""}
         <div class="vat">НДС 12,00 % <span>${fmt(vat)} ₸</span></div>
       </td>
-      <td data-label="Отдел">${item.dept}</td>
-      <td data-label="Цена">${fmt(item.price)}</td>
-      <td data-label="Кол-во">${item.qty}</td>
-      <td data-label="Ед.изм.">${item.unit}</td>
-      <td class="sum" data-label="Сумма ₸">${fmt(line)}</td>
+      <td>${item.dept}</td>
+      <td>${fmt(item.price)}</td>
+      <td>${item.qty}</td>
+      <td>${item.unit}</td>
+      <td class="sum">${fmt(lineTotal)}</td>
     `;
     rows.appendChild(tr);
   });
