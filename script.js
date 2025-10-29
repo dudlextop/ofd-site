@@ -14,7 +14,7 @@ const ITEMS = [
     no: 2,
     title: "Magic Mouse - Black Multi-Touch Surface",
     details: "Model A2304",
-    dept: "83",
+    dept: "1",
     price: 83990,
     qty: 2, // было 1, теперь 2
     unit: "шт"
