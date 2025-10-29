@@ -94,12 +94,17 @@ function render() {
   `;
 
   // === ВСТАВКА ПАРАМЕТРОВ В ВЕРСТКУ ===
+  const headline = document.querySelector(".headline");
+  if (headline) headline.textContent = "ЧЕК НАЙДЕН!"; // только текст, без суммы
+
+  const closeBtn = document.querySelector(".close");
+  if (closeBtn) closeBtn.remove(); // убираем крестик
+
   if (fp) document.querySelector(".fp").textContent = `ФП: ${fp}`;
   if (reg) {
     const regLine = document.querySelector(".org p:nth-child(4)");
     if (regLine) regLine.textContent = `Регистрационный номер: ${reg}`;
   }
-  if (sum) document.querySelector(".headline").textContent = `ЧЕК НАЙДЕН! (${sum} ₸)`;
   if (time) {
     const formatted = time
       .replace("T", " ")
