@@ -1,45 +1,23 @@
 // === ДАННЫЕ (по умолчанию, если параметры не переданы) ===
 const VAT_RATE = 0.12;
 const ITEMS = [
-  {
-    no: 1,
-    title: "Apple MacBook Pro 16.2",
+  { no: 1, title: "Apple MacBook Pro 16.2",
     details: "(3456×2234) Apple M4 Max System on Chip (SoC) RAM 36GB SSD 1000GB Apple macOS Sequoia Space Black 2.15kg",
-    dept: "1",
-    price: 2604990,
-    qty: 2,
-    unit: "шт"
-  },
-  {
-    no: 2,
-    title: "Magic Mouse - Black Multi-Touch Surface",
-    details: "Model A2304",
-    dept: "1",
-    price: 83990,
-    qty: 2,
-    unit: "шт"
-  },
-  {
-    no: 3,
-    title: "Доставка товара",
-    details: "",
-    dept: "1",
-    price: 1500,
-    qty: 1,
-    unit: "шт"
-  }
+    dept: "1", price: 2604990, qty: 2, unit: "шт" },
+  { no: 2, title: "Magic Mouse - Black Multi-Touch Surface",
+    details: "Model A2304", dept: "1", price: 83990, qty: 2, unit: "шт" },
+  { no: 3, title: "Доставка товара", details: "", dept: "1", price: 1500, qty: 1, unit: "шт" }
 ];
 
 // === ЧТЕНИЕ ПАРАМЕТРОВ ИЗ URL ===
 const params = new URLSearchParams(window.location.search);
-const fp = params.get("i");  // фискальный признак
-const reg = params.get("f"); // регистрационный номер
-const sum = params.get("s"); // сумма
-const time = params.get("t"); // дата и время
+const fp = params.get("i");   // фискальный признак
+const reg = params.get("f");  // регистрационный номер
+const sum = params.get("s");  // сумма (не используем в заголовке)
+const time = params.get("t"); // дата и время, формат YYYYMMDDTHHMMSS|YYYYMMDDTHHMM
 
 // Формат числа: "2 690 480,00"
-const fmt = (n) =>
-  new Intl.NumberFormat('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n);
+const fmt = (n) => new Intl.NumberFormat('ru-RU', { minimumFractionDigits: 2, maximumFractionDigits: 2 }).format(n);
 
 // Если цена включает НДС 12%, то сумма НДС = total * 12 / 112
 const vatInclusive = (total) => total * VAT_RATE / (1 + VAT_RATE);
@@ -47,14 +25,12 @@ const vatInclusive = (total) => total * VAT_RATE / (1 + VAT_RATE);
 function render() {
   const rows = document.getElementById("rows");
   const totals = document.getElementById("totals");
-  let grand = 0;
-  let taxes = 0;
+  let grand = 0, taxes = 0;
 
   ITEMS.forEach(item => {
     const lineTotal = item.price * item.qty;
     const vat = vatInclusive(lineTotal);
-    grand += lineTotal;
-    taxes += vat;
+    grand += lineTotal; taxes += vat;
 
     const trSpacer = document.createElement("tr");
     trSpacer.className = "spacer";
@@ -95,7 +71,7 @@ function render() {
 
   // === ВСТАВКА ПАРАМЕТРОВ В ВЕРСТКУ ===
   const headline = document.querySelector(".headline");
-  if (headline) headline.textContent = "ЧЕК НАЙДЕН!"; // только текст, без суммы
+  if (headline) headline.textContent = "ЧЕК НАЙДЕН!"; // без суммы
 
   const closeBtn = document.querySelector(".close");
   if (closeBtn) closeBtn.remove(); // убираем крестик
@@ -105,10 +81,11 @@ function render() {
     const regLine = document.querySelector(".org p:nth-child(4)");
     if (regLine) regLine.textContent = `Регистрационный номер: ${reg}`;
   }
+
   if (time) {
-    const formatted = time
-      .replace("T", " ")
-      .replace(/(\\d{4})(\\d{2})(\\d{2})/, "$3.$2.$1");
+    // поддерживаем YYYYMMDDTHHMMSS и YYYYMMDDTHHMM
+    const m = /^(\d{4})(\d{2})(\d{2})T(\d{2})(\d{2})/.exec(time);
+    const formatted = m ? `${m[3]}.${m[2]}.${m[1]} / ${m[4]}:${m[5]}` : time;
     const dateLine = document.querySelector(".meta p:last-child");
     if (dateLine) dateLine.textContent = formatted;
   }
