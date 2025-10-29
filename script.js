@@ -5,7 +5,7 @@ const ITEMS = [
     details: "(3456×2234) Apple M4 Max System on Chip (SoC) RAM 36GB SSD 1000GB Apple macOS Sequoia Space Black 2.15kg",
     dept: "1", price: 2604990, qty: 2, unit: "шт" },
   { no: 2, title: "Magic Mouse - Black Multi-Touch Surface",
-    details: "Model A2304", dept: "1", price: 83990, qty: 2, unit: "шт" },
+    details: "Model A3204", dept: "1", price: 83990, qty: 2, unit: "шт" },
   { no: 3, title: "Доставка товара", details: "", dept: "1", price: 1500, qty: 1, unit: "шт" }
 ];
 
