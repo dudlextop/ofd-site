@@ -23,7 +23,7 @@ const ITEMS = [
     no: 3,
     title: "Доставка товара",
     details: "",
-    dept: "1 500",
+    dept: "1",
     price: 1500,
     qty: 1,
     unit: "шт"
